@@ -35,9 +35,24 @@ Server runs at `http://localhost:3000`
 Edit `.env`:
 
 ```
+# API Configuration by Rikixz
+# Server Configuration
 PORT=3000
+HOST=0.0.0.0
+
+# Hide real IP - Enable proxy
 HIDE_IP=true
+
+# API Settings
+API_BASE_URL=https://api.ashcon.app/mojang/v2/user/
+DEFAULT_TIMEOUT=10000
+
+# CORS Settings (comma separated origins or * for all)
 CORS_ORIGIN=*
+
+# Rate Limiting
+RATE_LIMIT_WINDOW=900000
+RATE_LIMIT_MAX_REQUESTS=100
 ```
 
 ## Templates
