@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft API Client Example</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    input { padding: 10px; font-size: 16px; width: 200px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 15px; overflow-x: auto; border-radius: 8px; }
+    .result { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Minecraft Account Checker</h1>
+  <p>Enter a Minecraft username to check if the account exists:</p>
+  
+  <input type="text" id="username" placeholder="Username" maxlength="16">
+  <button onclick="checkPlayer()">Check</button>
+  
+  <div class="result">
+    <pre id="output">Results will appear here...</pre>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin;
+
+    async function checkPlayer() {
+      const username = document.getElementById('username').value.trim();
+      const output = document.getElementById('output');
+      
+      if (!username) {
+        output.textContent = 'Please enter a username';
+        return;
+      }
+
+      output.textContent = 'Loading...';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/check/${encodeURIComponent(username)}`);
+        const data = await response.json();
+
+        if (data.success) {
+          output.textContent = JSON.stringify(data, null, 2);
+        } else {
+          output.textContent = `Error: ${data.data?.error || 'Unknown error'}`;
+        }
+      } catch (error) {
+        output.textContent = `Failed to connect: ${error.message}`;
+      }
+    }
+
+    document.getElementById('username').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkPlayer();
+    });
+  </script>
+</body>
+</html>
